@@ -1,4 +1,3 @@
-import { useNavigation } from '@react-navigation/core';
 import {
   Image,
   StyleSheet,
@@ -33,7 +32,6 @@ import {
 import { theme } from '../assets/theme';
 import { metrics } from '../constants/metrics';
 
-import type { NavigationProps } from '../../Wallet/AssetsList';
 import type { CardProps } from '../assets/types';
 
 const styles = StyleSheet.create({
@@ -47,6 +45,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingBottom: 16,
     height: CARD_HEIGHT_OPEN - CARD_HEADER_HEIGHT - CARD_IMAGE_HEIGTH,
+    backgroundColor: 'orange',
   },
   title: {
     fontSize: 18,
@@ -75,6 +74,7 @@ const styles = StyleSheet.create({
   fieldValue: {
     fontSize: 21,
     color: theme.colors.white,
+    textAlign: 'right',
   },
   image: {
     height: 40,
@@ -112,7 +112,6 @@ const Card = ({
   swipeY,
   inTransition,
 }: CardProps) => {
-  const navigation = useNavigation<NavigationProps>();
   const { accountId, networkId, walletId } = useActiveWalletAccount();
 
   const animatedHeight = useSharedValue(CARD_HEIGHT_CLOSED);
@@ -196,79 +195,56 @@ const Card = ({
 
   const handleCardPress = () => {
     if (selectedCard.value === -1 && !inTransition.value) {
-      console.log('not card open press');
       selectedCard.value = index;
-    }
-    console.log('press');
-  };
-
-  const handleCardPressOut = () => {
-    if (selectedCard.value === index) {
-      navigation.navigate(HomeRoutes.ScreenTokenDetail, {
-        walletId,
-        accountId,
-        networkId,
-        coingeckoId: item.coingeckoId,
-        sendAddress: item.sendAddress,
-        tokenAddress: item.address,
-        // historyFilter: filter,
-        price: item.price,
-        price24h: item.price24h,
-        symbol: item.symbol,
-        name: item.name,
-        logoURI: item.logoURI,
-      });
     }
   };
 
   return (
-    <TouchableHighlight
-      onPress={handleCardPress}
-      onPressOut={handleCardPressOut}
-      pressRetentionOffset={{
-        top: 0,
-        bottom: 0,
-        left: 0,
-        right: 0,
-      }}
-    >
+    <TouchableHighlight onPress={handleCardPress}>
       <Animated.View
-        style={[
-          styles.cardContainer,
-          {
-            marginTop,
-            backgroundColor: 'gray',
-          },
-          animatedStyle,
-        ]}
+        style={[styles.cardContainer, { marginTop }, animatedStyle]}
       >
-        <TouchableHighlight
-          onPress={() => console.log('touchable')}
-          style={styles.headerContainer}
+        <View
+          style={[
+            styles.headerContainer,
+            {
+              backgroundColor: 'gray',
+            },
+          ]}
         >
           <View
             style={{
               display: 'flex',
               flexDirection: 'row',
-              alignItems: 'center',
+              justifyContent: 'space-between',
+              width: '100%',
             }}
           >
-            <Image
-              source={{
-                uri: item.logoURI || '',
+            <View
+              style={{
+                display: 'flex',
+                flexDirection: 'row',
+                alignItems: 'center',
               }}
-              style={styles.image}
-            />
-            <Text style={styles.title}>{item.name}</Text>
-          </View>
-        </TouchableHighlight>
-
-        <View style={styles.cardSubContainer}>
-          <Flex>
-            <View style={styles.fieldSpacer}>
+            >
+              <Image
+                source={{
+                  uri: item.logoURI || '',
+                }}
+                style={styles.image}
+              />
+              <Text style={styles.title}>{item.name}</Text>
+            </View>
+            <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Text style={styles.fieldLabel}>Balance</Text>
               <Text style={styles.fieldValue}>{item.balance}</Text>
             </View>
+          </View>
+        </View>
+
+        <View style={styles.cardSubContainer}>
+          <Flex>
+            <View style={styles.fieldSpacer} />
 
             <View style={[styles.fieldSpacer, styles.stContainer]}>
               <View>
