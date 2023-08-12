@@ -1,11 +1,4 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  type ViewProps,
-} from 'react-native';
+import { Image, StyleSheet, Text, View, type ViewProps } from 'react-native';
 import Animated, {
   Easing,
   Extrapolation,
@@ -113,6 +106,7 @@ const Card = ({
   swipeY,
   inTransition,
 }: CardProps) => {
+  const isDisabled = useSharedValue(false);
   const animatedHeight = useSharedValue(CARD_HEIGHT_CLOSED);
   const transY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -193,14 +187,21 @@ const Card = ({
   );
 
   const handleCardPress = () => {
-    console.log('press');
     if (selectedCard.value === -1 && !inTransition.value) {
       selectedCard.value = index;
     }
   };
 
+  useAnimatedReaction(
+    () => selectedCard.value === index,
+    (shouldDisable) => {
+      isDisabled.value = shouldDisable;
+      console.log({ shouldDisable });
+    },
+  );
+
   return (
-    <TouchableWithoutFeedback onPress={handleCardPress}>
+    <View onTouchStart={handleCardPress}>
       <Animated.View
         style={[styles.cardContainer, { marginTop }, animatedStyle]}
       >
@@ -274,7 +275,7 @@ const Card = ({
 
         <View style={styles.borderOverlay} />
       </Animated.View>
-    </TouchableWithoutFeedback>
+    </View>
   );
 };
 
