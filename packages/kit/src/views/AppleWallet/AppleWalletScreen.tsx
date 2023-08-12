@@ -14,11 +14,9 @@ import { useAccountTokens, useActiveWalletAccount } from '../../hooks';
 
 import {
   BACK_BUTTON_HEIGHT,
-  CARDS,
   CARD_HEIGHT_CLOSED,
   CARD_MARGIN,
 } from './assets/config';
-import { BackButton } from './components/BackButton';
 import Card from './components/Card';
 import SwipeGesture from './components/SwipeGesture';
 import { metrics } from './constants/metrics';
@@ -79,7 +77,7 @@ const AppleWalletScreen = () => {
             paddingTop: BACK_BUTTON_HEIGHT + insets.top + 16,
             paddingBottom:
               CARD_HEIGHT_CLOSED +
-              CARD_MARGIN * (CARDS.length - 1) +
+              CARD_MARGIN * (accountTokens.length - 1) +
               insets.bottom,
           }}
           showsVerticalScrollIndicator={false}

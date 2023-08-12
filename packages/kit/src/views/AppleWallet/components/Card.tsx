@@ -43,7 +43,6 @@ const styles = StyleSheet.create({
   },
   cardSubContainer: {
     paddingHorizontal: 16,
-    paddingBottom: 16,
     height: CARD_HEIGHT_OPEN - CARD_HEADER_HEIGHT - CARD_IMAGE_HEIGTH,
     backgroundColor: 'orange',
   },
