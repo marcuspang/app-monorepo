@@ -132,16 +132,16 @@ const Card = ({
   const spreadOffset = Math.min(2.5 * index * index, spread);
   const { accountId, networkId } = useActiveWalletAccount();
   const bgImgUrls = [
-    require('../assets/diamond.png'),
-    require('../assets/hexagon.png'),
-    require('../assets/Pattern-Transparent-Image.png'),
+    require('../assets/hexagons.png'),
+    require('../assets/45-degree-fabric-light.png'),
+    require('../assets/gplay.png'),
   ];
   const bgImgUrl = bgImgUrls[index % bgImgUrls.length];
 
   const linearGradients = [
     'linear-gradient( 111.4deg,  rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58% )',
     'linear-gradient( 111.4deg,  #a1f694 1%, #717bee 58% )',
-    'linear-gradient( 111.4deg,  #a1cff8 1%, #f1afee 58% )',
+    'linear-gradient( 111.4deg,  #3a99ed 1%, #f38cee 58% )',
   ];
   const linearGradient = linearGradients[index % linearGradients.length];
 
