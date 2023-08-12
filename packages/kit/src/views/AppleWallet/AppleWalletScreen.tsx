@@ -25,7 +25,6 @@ import { metrics } from './constants/metrics';
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.colors.background,
     paddingHorizontal: 16,
   },
   backButton: {
