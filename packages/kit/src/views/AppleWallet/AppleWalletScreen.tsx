@@ -1,3 +1,5 @@
+import { useCallback } from 'react';
+
 import { StyleSheet } from 'react-native';
 import Animated, {
   Extrapolation,
@@ -8,9 +10,23 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { ScrollView } from '@onekeyhq/components';
+import { IconButton, ScrollView } from '@onekeyhq/components';
+import type { HomeRoutes } from '@onekeyhq/kit/src/routes/routesEnum';
+import {
+  ManageTokenModalRoutes,
+  ModalRoutes,
+  RootRoutes,
+} from '@onekeyhq/kit/src/routes/routesEnum';
+import type {
+  HomeRoutesParams,
+  RootRoutesParams,
+} from '@onekeyhq/kit/src/routes/types';
 
-import { useAccountTokens, useActiveWalletAccount } from '../../hooks';
+import {
+  useAccountTokens,
+  useActiveWalletAccount,
+  useNavigation,
+} from '../../hooks';
 
 import {
   BACK_BUTTON_HEIGHT,
@@ -20,6 +36,14 @@ import {
 import Card from './components/Card';
 import SwipeGesture from './components/SwipeGesture';
 import { metrics } from './constants/metrics';
+
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type NavigationProps = NativeStackNavigationProp<
+  RootRoutesParams,
+  RootRoutes.Main
+> &
+  NativeStackNavigationProp<HomeRoutesParams, HomeRoutes.FullTokenListScreen>;
 
 const styles = StyleSheet.create({
   container: {
@@ -63,8 +87,24 @@ const AppleWalletScreen = () => {
     };
   });
 
+  const navigation = useNavigation<NavigationProps>();
+  const onNavigate = useCallback(() => {
+    navigation.navigate(RootRoutes.Modal, {
+      screen: ModalRoutes.ManageToken,
+      params: { screen: ManageTokenModalRoutes.Listing },
+    });
+  }, [navigation]);
+
   return (
     <ScrollView style={{ height: '100%' }}>
+      <IconButton
+        onPress={onNavigate}
+        size="sm"
+        name="PlusMini"
+        type="plain"
+        ml="auto"
+        mr={3}
+      />
       <SwipeGesture {...{ selectedCard, swipeY, inTransition }}>
         <Animated.ScrollView
           style={styles.container}

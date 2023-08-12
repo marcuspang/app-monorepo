@@ -43,7 +43,6 @@ import type { CardProps } from '../assets/types';
 const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: 20,
-    position: 'absolute',
     width: '100%',
     overflow: 'hidden',
     borderWidth: 1,
@@ -53,6 +52,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     display: 'flex',
     flexDirection: 'column',
+    paddingTop: 12,
     height: CARD_HEIGHT_OPEN - CARD_HEADER_HEIGHT,
     backgroundColor: '#FDC921',
   },
@@ -218,59 +218,63 @@ const Card = ({
         height: '100%',
       }}
     >
-      <Animated.View
-        style={[
-          styles.cardContainer,
-          {
-            marginTop,
-            shadowColor: 'black',
-            shadowOffset: {
-              width: 0,
-              height: 8,
+      <View>
+        <Animated.View
+          style={[
+            styles.cardContainer,
+            {
+              marginTop,
+              shadowColor: 'black',
+              shadowOffset: {
+                width: 0,
+                height: 8,
+              },
+              shadowRadius: 4,
+              shadowOpacity: 0.1,
+              height: '100%',
             },
-            shadowRadius: 4,
-            shadowOpacity: 0.1,
-            height: '100%',
-          },
-          animatedStyle,
-        ]}
-      >
-        <View style={[styles.headerContainer]}>
-          <View
-            style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: '100%',
-            }}
-          >
+            {
+              position:
+                isOpened && !inTransition.value ? 'relative' : 'absolute',
+            },
+            animatedStyle,
+          ]}
+        >
+          <View style={[styles.headerContainer]}>
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                height: '100%'
               }}
             >
-              <Image
-                source={{
-                  uri: item.logoURI || '',
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
                 }}
-                style={styles.image}
-              />
-              <Text style={styles.title}>{item.name}</Text>
-            </View>
-            <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Text style={styles.fieldLabel}>Balance</Text>
-              <Text style={styles.fieldValue}>
-                {item.balance} {item.symbol}
-              </Text>
+              >
+                <Image
+                  source={{
+                    uri: item.logoURI || '',
+                  }}
+                  style={styles.image}
+                />
+                <Text style={styles.title}>{item.name}</Text>
+              </View>
+              <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
+                <Text style={styles.fieldLabel}>Balance</Text>
+                <Text style={styles.fieldValue}>
+                  {item.balance} {item.symbol}
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
-
-        <View style={styles.cardSubContainer}>
-          {isOpened && (
-            <>
+          <View style={[styles.cardSubContainer]}>
+            {isOpened && (
               <View
                 style={[
                   styles.fieldSpacer,
@@ -280,17 +284,17 @@ const Card = ({
               >
                 <ButtonsSection {...item} />
               </View>
-              <TxHistoryListView
-                accountId={accountId}
-                networkId={networkId}
-                tokenId={
-                  isAllNetworks(networkId) ? item.coingeckoId : item.address
-                }
-              />
-            </>
-          )}
-        </View>
-      </Animated.View>
+            )}
+          </View>
+        </Animated.View>
+        {isOpened && (
+          <TxHistoryListView
+            accountId={accountId}
+            networkId={networkId}
+            tokenId={isAllNetworks(networkId) ? item.coingeckoId : item.address}
+          />
+        )}
+      </View>
     </TouchableWithoutFeedback>
   );
 };

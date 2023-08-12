@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unsafe-return */
 import type { FC } from 'react';
 import { useCallback, useMemo } from 'react';
 
@@ -38,11 +39,12 @@ import {
 } from '../../../routes/routesEnum';
 import BaseMenu from '../../Overlay/BaseMenu';
 import { SendModalRoutes } from '../../Send/enums';
-import { ButtonItem } from '../../TokenDetail/TokenDetailHeader/ButtonItem';
 import { FavoritedButton } from '../../TokenDetail/TokenDetailHeader/Header';
 
+import { ButtonItem } from './ButtonItem';
+
 import type { IAccountToken } from '../../Overview/types';
-import type { IButtonItem } from '../../TokenDetail/TokenDetailHeader/ButtonItem';
+import type { IButtonItem } from './ButtonItem';
 
 type ISingleChainInfo = {
   network: Network;
