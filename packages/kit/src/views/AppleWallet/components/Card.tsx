@@ -2,7 +2,7 @@ import {
   Image,
   StyleSheet,
   Text,
-  TouchableHighlight,
+  TouchableWithoutFeedback,
   View,
   type ViewProps,
 } from 'react-native';
@@ -18,8 +18,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { useActiveWalletAccount } from '../../../hooks';
-import { HomeRoutes } from '../../../routes/routesEnum';
 import {
   BACK_BUTTON_HEIGHT,
   CARD_HEADER_HEIGHT,
@@ -31,6 +29,8 @@ import {
 } from '../assets/config';
 import { theme } from '../assets/theme';
 import { metrics } from '../constants/metrics';
+
+import { ButtonsSection } from './ButtonsSections';
 
 import type { CardProps } from '../assets/types';
 
@@ -70,6 +70,7 @@ const styles = StyleSheet.create({
     fontWeight: '600',
     color: theme.colors.white,
     textTransform: 'uppercase',
+    textAlign: 'right',
   },
   fieldValue: {
     fontSize: 21,
@@ -112,8 +113,6 @@ const Card = ({
   swipeY,
   inTransition,
 }: CardProps) => {
-  const { accountId, networkId, walletId } = useActiveWalletAccount();
-
   const animatedHeight = useSharedValue(CARD_HEIGHT_CLOSED);
   const transY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -194,13 +193,14 @@ const Card = ({
   );
 
   const handleCardPress = () => {
+    console.log('press');
     if (selectedCard.value === -1 && !inTransition.value) {
       selectedCard.value = index;
     }
   };
 
   return (
-    <TouchableHighlight onPress={handleCardPress}>
+    <TouchableWithoutFeedback onPress={handleCardPress}>
       <Animated.View
         style={[styles.cardContainer, { marginTop }, animatedStyle]}
       >
@@ -237,7 +237,9 @@ const Card = ({
             </View>
             <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Text style={styles.fieldLabel}>Balance</Text>
-              <Text style={styles.fieldValue}>{item.balance}</Text>
+              <Text style={styles.fieldValue}>
+                {item.balance} {item.symbol}
+              </Text>
             </View>
           </View>
         </View>
@@ -248,12 +250,7 @@ const Card = ({
 
             <View style={[styles.fieldSpacer, styles.stContainer]}>
               <View>
-                {/* <Text style={styles.fieldLabel}>
-                  {item.secondaryField.label}
-                </Text>
-                <Text style={styles.fieldValue}>
-                  {item.secondaryField.value}
-                </Text> */}
+                <ButtonsSection />
               </View>
 
               <View>
@@ -277,7 +274,7 @@ const Card = ({
 
         <View style={styles.borderOverlay} />
       </Animated.View>
-    </TouchableHighlight>
+    </TouchableWithoutFeedback>
   );
 };
 

@@ -1,8 +1,5 @@
 import { metrics } from '../constants/metrics';
 
-import type { CardContentProps } from './types';
-
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 export const CARD_HEIGHT_CLOSED = 224;
 export const CARD_HEIGHT_OPEN = 590;
 export const CARD_IMAGE_HEIGTH = 165;
@@ -10,7 +7,6 @@ export const CARD_HEADER_HEIGHT = 59;
 export const CARD_MARGIN = 70;
 export const BACK_BUTTON_HEIGHT = 40;
 export const CLOSE_THRESHOLD = metrics.screenHeight * 0.11;
-/* eslint-enable @typescript-eslint/no-unsafe-call */
 
 export const SPRING_CONFIG = {
   OPEN: {
@@ -28,7 +24,7 @@ export const SPRING_CONFIG = {
   },
 };
 
-export const CARDS: CardContentProps[] = [
+export const CARDS = [
   {
     title: 'GameHub',
     headerField: {
