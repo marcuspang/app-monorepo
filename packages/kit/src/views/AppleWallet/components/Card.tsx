@@ -23,6 +23,10 @@ import Animated, {
 import { Box } from '@onekeyhq/components';
 import { isAllNetworks } from '@onekeyhq/engine/src/managers/network';
 
+import {
+  FormatBalance,
+  FormatCurrencyNumber,
+} from '../../../components/Format';
 import { useActiveWalletAccount } from '../../../hooks';
 import {
   BACK_BUTTON_HEIGHT,
@@ -273,11 +277,20 @@ const Card = ({
                   justifyContent: 'center',
                 }}
               >
-                <Text style={styles.fieldValue}>
-                  {(+item.balance).toFixed(5)} {item.symbol}
-                </Text>
+                <FormatBalance
+                  balance={item.balance}
+                  suffix={item.symbol}
+                  formatOptions={{
+                    fixed: 4,
+                  }}
+                  render={(ele) => <Text style={styles.fieldValue}>{ele}</Text>}
+                />
                 <Text style={styles.fieldLabel}>
-                  {(+item.balance / (+item.value || 1)).toFixed(5)} USD
+                  <FormatCurrencyNumber
+                    decimals={2}
+                    value={0}
+                    convertValue={+item.usdValue}
+                  />
                 </Text>
               </View>
             </View>
