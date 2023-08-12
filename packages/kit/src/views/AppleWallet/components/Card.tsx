@@ -1,5 +1,6 @@
 import {
   Image,
+  ImageBackground,
   StyleSheet,
   Text,
   TouchableWithoutFeedback,
@@ -41,6 +42,7 @@ import type { CardProps } from '../assets/types';
 const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: 20,
+    border: 0,
     position: 'absolute',
     width: '100%',
     overflow: 'hidden',
@@ -52,7 +54,8 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'column',
     height: CARD_HEIGHT_OPEN - CARD_HEADER_HEIGHT - CARD_IMAGE_HEIGTH,
-    backgroundColor: '#FDC921',
+    // backgroundImage:
+    //   'linear-gradient( 111.4deg,  rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58% )',
   },
   title: {
     fontSize: 18,
@@ -65,7 +68,9 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     height: CARD_HEADER_HEIGHT,
-    backgroundColor: '#FDC921',
+    border: 0,
+    // backgroundImage:
+    //   'linear-gradient( 111.4deg,  rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58% )',
   },
   headerSubcontainer: {
     alignItems: 'center',
@@ -98,6 +103,11 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   qr: { width: 140, height: 140 },
+  bgImg: {
+    flex: 1,
+    resizeMode: 'cover', // or 'stretch' or 'contain'
+    justifyContent: 'center', // optional
+  },
 });
 
 export const Flex = ({ children, style, ...rest }: ViewProps) => (
@@ -121,6 +131,19 @@ const Card = ({
   const spread = 70 * index;
   const spreadOffset = Math.min(2.5 * index * index, spread);
   const { accountId, networkId } = useActiveWalletAccount();
+  const bgImgUrls = [
+    require('../assets/diamond.png'),
+    require('../assets/hexagon.png'),
+    require('../assets/Pattern-Transparent-Image.png'),
+  ];
+  const bgImgUrl = bgImgUrls[index % bgImgUrls.length];
+
+  const linearGradients = [
+    'linear-gradient( 111.4deg,  rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58% )',
+    'linear-gradient( 111.4deg,  #a1f694 1%, #717bee 58% )',
+    'linear-gradient( 111.4deg,  #a1cff8 1%, #f1afee 58% )',
+  ];
+  const linearGradient = linearGradients[index % linearGradients.length];
 
   const animatedStyle = useAnimatedStyle(() => ({
     height: animatedHeight.value,
@@ -205,7 +228,9 @@ const Card = ({
       <Animated.View
         style={[styles.cardContainer, { marginTop }, animatedStyle]}
       >
-        <View style={styles.headerContainer}>
+        <View
+          style={{ ...styles.headerContainer, backgroundImage: linearGradient }}
+        >
           <View
             style={{
               display: 'flex',
@@ -238,18 +263,30 @@ const Card = ({
           </View>
         </View>
 
-        <View style={styles.cardSubContainer}>
-          <View
-            style={[styles.fieldSpacer, styles.stContainer, { width: '100%' }]}
-          >
-            <ButtonsSection {...item} />
+        {/* <ImageBackground source={{ uri: bgImgUrl }} style={styles.bgImg}> */}
+        <ImageBackground
+          source={{ uri: bgImgUrl }}
+          style={{ backgroundImage: linearGradient, ...styles.bgImg }}
+        >
+          <View style={styles.cardSubContainer}>
+            <View
+              style={[
+                styles.fieldSpacer,
+                styles.stContainer,
+                { width: '100%' },
+              ]}
+            >
+              <ButtonsSection {...item} />
+            </View>
+            <TxHistoryListView
+              accountId={accountId}
+              networkId={networkId}
+              tokenId={
+                isAllNetworks(networkId) ? item.coingeckoId : item.address
+              }
+            />
           </View>
-          <TxHistoryListView
-            accountId={accountId}
-            networkId={networkId}
-            tokenId={isAllNetworks(networkId) ? item.coingeckoId : item.address}
-          />
-        </View>
+        </ImageBackground>
       </Animated.View>
     </TouchableWithoutFeedback>
   );
