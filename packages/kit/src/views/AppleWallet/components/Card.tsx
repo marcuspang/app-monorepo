@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Image,
   ImageBackground,
@@ -19,15 +21,19 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import { Box } from '@onekeyhq/components';
 import { isAllNetworks } from '@onekeyhq/engine/src/managers/network';
 
+import {
+  FormatBalance,
+  FormatCurrencyNumber,
+} from '../../../components/Format';
 import { useActiveWalletAccount } from '../../../hooks';
 import {
   BACK_BUTTON_HEIGHT,
   CARD_HEADER_HEIGHT,
   CARD_HEIGHT_CLOSED,
   CARD_HEIGHT_OPEN,
-  CARD_IMAGE_HEIGTH,
   CARD_MARGIN,
   SPRING_CONFIG,
 } from '../assets/config';
@@ -53,9 +59,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     display: 'flex',
     flexDirection: 'column',
-    height: CARD_HEIGHT_OPEN - CARD_HEADER_HEIGHT - CARD_IMAGE_HEIGTH,
-    // backgroundImage:
-    //   'linear-gradient( 111.4deg,  rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58% )',
+    paddingTop: 12,
+    height: CARD_HEIGHT_OPEN - CARD_HEADER_HEIGHT,
+    // backgroundColor: '#FDC921',
   },
   title: {
     fontSize: 18,
@@ -75,7 +81,7 @@ const styles = StyleSheet.create({
   headerSubcontainer: {
     alignItems: 'center',
   },
-  fieldSpacer: { marginTop: 32 },
+  fieldSpacer: { marginTop: 16 },
   stContainer: { flexDirection: 'row', justifyContent: 'space-between' },
   fieldLabel: {
     fontSize: 11,
@@ -124,6 +130,7 @@ const Card = ({
   swipeY,
   inTransition,
 }: CardProps) => {
+  const [isOpened, setIsOpened] = useState(false);
   const animatedHeight = useSharedValue(CARD_HEIGHT_CLOSED);
   const transY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -197,6 +204,7 @@ const Card = ({
         }
       } else {
         if (previousSelection === index) {
+          console.log({ previousSelection, currentSelection });
           transY.value = withSpring(0, SPRING_CONFIG.CLOSE);
         } else {
           const wasAbove = (previousSelection ?? 0) > index;
@@ -217,6 +225,13 @@ const Card = ({
     },
   );
 
+  useAnimatedReaction(
+    () => selectedCard.value === index,
+    (showModal) => {
+      setIsOpened(showModal);
+    },
+  );
+
   const handleCardPress = () => {
     if (selectedCard.value === -1 && !inTransition.value) {
       selectedCard.value = index;
@@ -224,60 +239,123 @@ const Card = ({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleCardPress}>
-      <Animated.View
-        style={[styles.cardContainer, { marginTop }, animatedStyle]}
-      >
-        <View
-          style={{ ...styles.headerContainer, backgroundImage: linearGradient }}
+    <TouchableWithoutFeedback
+      onPress={handleCardPress}
+      disabled={isOpened}
+      style={{
+        height: '100%',
+      }}
+    >
+      <View>
+        <Animated.View
+          style={[
+            styles.cardContainer,
+            {
+              marginTop,
+              shadowColor: 'black',
+              shadowOffset: {
+                width: 0,
+                height: 8,
+              },
+              shadowRadius: 4,
+              shadowOpacity: 0.1,
+              height: '100%',
+              marginBottom: -marginTop,
+            },
+            {
+              position:
+                isOpened && !inTransition.value ? 'relative' : 'absolute',
+            },
+            animatedStyle,
+          ]}
         >
           <View
             style={{
-              display: 'flex',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: '100%',
+              ...styles.headerContainer,
+              backgroundImage: linearGradient,
             }}
           >
             <View
               style={{
                 display: 'flex',
                 flexDirection: 'row',
-                alignItems: 'center',
+                justifyContent: 'space-between',
+                width: '100%',
+                height: '100%',
               }}
             >
-              <Image
-                source={{
-                  uri: item.logoURI || '',
+              <View
+                style={{
+                  display: 'flex',
+                  flexDirection: 'row',
+                  alignItems: 'center',
                 }}
-                style={styles.image}
-              />
-              <Text style={styles.title}>{item.name}</Text>
-            </View>
-            <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <Text style={styles.fieldLabel}>Balance</Text>
-              <Text style={styles.fieldValue}>
-                {item.balance} {item.symbol}
-              </Text>
+              >
+                <Image
+                  source={{
+                    uri: item.logoURI || '',
+                  }}
+                  style={styles.image}
+                />
+                <Text style={styles.title}>{item.name}</Text>
+              </View>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}
+              >
+                <FormatBalance
+                  balance={item.balance}
+                  suffix={item.symbol}
+                  formatOptions={{
+                    fixed: 4,
+                  }}
+                  render={(ele) => <Text style={styles.fieldValue}>{ele}</Text>}
+                />
+                <Text style={styles.fieldLabel}>
+                  <FormatCurrencyNumber
+                    decimals={2}
+                    value={0}
+                    convertValue={+item.usdValue}
+                  />
+                </Text>
+              </View>
             </View>
           </View>
-        </View>
 
-        {/* <ImageBackground source={{ uri: bgImgUrl }} style={styles.bgImg}> */}
-        <ImageBackground
-          source={{ uri: bgImgUrl }}
-          style={{ backgroundImage: linearGradient, ...styles.bgImg }}
-        >
-          <View style={styles.cardSubContainer}>
+          {/* <ImageBackground source={{ uri: bgImgUrl }} style={styles.bgImg}> */}
+          <ImageBackground
+            source={{ uri: bgImgUrl }}
+            style={{ backgroundImage: linearGradient, ...styles.bgImg }}
+          >
             <View
               style={[
-                styles.fieldSpacer,
-                styles.stContainer,
-                { width: '100%' },
+                styles.cardSubContainer,
+                {
+                  display: 'flex',
+                  justifyContent: 'flex-end',
+                  paddingBottom: isOpened ? 24 : 52,
+                },
               ]}
             >
-              <ButtonsSection {...item} />
+              <View
+                style={[
+                  styles.fieldSpacer,
+                  styles.stContainer,
+                  { width: '100%' },
+                ]}
+              >
+                <Text style={{ fontSize: 24, fontFamily: 'monospace' }}>
+                  4242 4242 4242 4242
+                </Text>
+              </View>
             </View>
+          </ImageBackground>
+        </Animated.View>
+        {isOpened && (
+          <>
+            <ButtonsSection {...item} />
             <TxHistoryListView
               accountId={accountId}
               networkId={networkId}
@@ -285,9 +363,9 @@ const Card = ({
                 isAllNetworks(networkId) ? item.coingeckoId : item.address
               }
             />
-          </View>
-        </ImageBackground>
-      </Animated.View>
+          </>
+        )}
+      </View>
     </TouchableWithoutFeedback>
   );
 };
