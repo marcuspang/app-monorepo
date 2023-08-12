@@ -18,6 +18,10 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import { isAllNetworks } from '@onekeyhq/engine/src/managers/network';
+
+import { useActiveWalletAccount } from '../../../hooks';
+import { TxHistoryListView } from '../../TxHistory/TxHistoryListView';
 import {
   BACK_BUTTON_HEIGHT,
   CARD_HEADER_HEIGHT,
@@ -112,6 +116,7 @@ const Card = ({
   const marginTop = index * CARD_MARGIN;
   const spread = 70 * index;
   const spreadOffset = Math.min(2.5 * index * index, spread);
+  const { accountId, networkId } = useActiveWalletAccount();
 
   const animatedStyle = useAnimatedStyle(() => ({
     height: animatedHeight.value,
@@ -255,14 +260,14 @@ const Card = ({
                 <ButtonsSection {...item} />
               </View>
 
-              <View>
-                {/* <Text style={styles.fieldLabel}>
-                  {item.tertiaryField.label}
-                </Text>
-                <Text style={[styles.fieldValue, { textAlign: 'right' }]}>
-                  {item.tertiaryField.value}
-                </Text> */}
-              </View>
+              <TxHistoryListView
+                accountId={accountId}
+                networkId={networkId}
+                tokenId={
+                  isAllNetworks(networkId) ? item.coingeckoId : item.address
+                }
+                tabComponent
+              />
             </View>
           </Flex>
 
