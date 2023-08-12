@@ -292,10 +292,10 @@ export const ButtonsSection: FC<IAccountToken> = ({
   ]);
 
   return (
-    <Box>
-      <HStack justifyContent="space-between">
+    <Box width="100%">
+      <HStack justifyContent="space-between" width="100%">
         {!isVerticalLayout && (
-          <HStack flex="1" alignItems="center">
+          <HStack alignItems="center">
             <Token
               showInfo={false}
               size={8}
@@ -306,10 +306,7 @@ export const ButtonsSection: FC<IAccountToken> = ({
             <Typography.Heading ml="2">{symbol}</Typography.Heading>
           </HStack>
         )}
-        <HStack
-          justifyContent="space-between"
-          w={isVerticalLayout ? '100%' : undefined}
-        >
+        <HStack justifyContent="space-between" width="100%">
           {buttons.map((item) => (
             <ButtonItem
               key={item.id}

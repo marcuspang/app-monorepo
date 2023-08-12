@@ -1,4 +1,4 @@
-import { StyleSheet } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,

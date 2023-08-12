@@ -21,7 +21,6 @@ import Animated, {
 import { isAllNetworks } from '@onekeyhq/engine/src/managers/network';
 
 import { useActiveWalletAccount } from '../../../hooks';
-import { TxHistoryListView } from '../../TxHistory/TxHistoryListView';
 import {
   BACK_BUTTON_HEIGHT,
   CARD_HEADER_HEIGHT,
@@ -35,25 +34,30 @@ import { theme } from '../assets/theme';
 import { metrics } from '../constants/metrics';
 
 import { ButtonsSection } from './ButtonsSections';
+import { TxHistoryListView } from './TxHistoryListView';
 
 import type { CardProps } from '../assets/types';
 
 const styles = StyleSheet.create({
   cardContainer: {
-    borderRadius: 12,
+    borderRadius: 20,
     position: 'absolute',
     width: '100%',
     overflow: 'hidden',
+    borderWidth: 1,
+    color: 'lightgrey',
   },
   cardSubContainer: {
     paddingHorizontal: 16,
+    display: 'flex',
+    flexDirection: 'column',
     height: CARD_HEIGHT_OPEN - CARD_HEADER_HEIGHT - CARD_IMAGE_HEIGTH,
-    backgroundColor: 'orange',
+    backgroundColor: '#FDC921',
   },
   title: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: theme.colors.white,
+    color: '#13070C',
   },
   headerContainer: {
     flexDirection: 'row',
@@ -61,7 +65,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     height: CARD_HEADER_HEIGHT,
-    background: 'rgb(0,212,255)',
+    backgroundColor: '#FDC921',
   },
   headerSubcontainer: {
     alignItems: 'center',
@@ -71,13 +75,13 @@ const styles = StyleSheet.create({
   fieldLabel: {
     fontSize: 11,
     fontWeight: '600',
-    color: theme.colors.white,
+    color: '#13070C',
     textTransform: 'uppercase',
     textAlign: 'right',
   },
   fieldValue: {
     fontSize: 21,
-    color: theme.colors.white,
+    color: '#13070C',
     textAlign: 'right',
   },
   image: {
@@ -85,6 +89,7 @@ const styles = StyleSheet.create({
     width: 40,
     borderRadius: 1000,
     marginRight: 8,
+    borderWidth: 1,
   },
   qrContainer: {
     alignSelf: 'center',
@@ -109,7 +114,6 @@ const Card = ({
   swipeY,
   inTransition,
 }: CardProps) => {
-  const isDisabled = useSharedValue(false);
   const animatedHeight = useSharedValue(CARD_HEIGHT_CLOSED);
   const transY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -196,29 +200,12 @@ const Card = ({
     }
   };
 
-  useAnimatedReaction(
-    () => selectedCard.value === index,
-    (shouldDisable) => {
-      isDisabled.value = shouldDisable;
-    },
-  );
-
   return (
-    <TouchableWithoutFeedback
-      onPress={handleCardPress}
-      disabled={isDisabled.value}
-    >
+    <TouchableWithoutFeedback onPress={handleCardPress}>
       <Animated.View
         style={[styles.cardContainer, { marginTop }, animatedStyle]}
       >
-        <View
-          style={[
-            styles.headerContainer,
-            {
-              backgroundColor: 'gray',
-            },
-          ]}
-        >
+        <View style={styles.headerContainer}>
           <View
             style={{
               display: 'flex',
@@ -252,31 +239,16 @@ const Card = ({
         </View>
 
         <View style={styles.cardSubContainer}>
-          <Flex>
-            <View style={styles.fieldSpacer} />
-
-            <View style={[styles.fieldSpacer, styles.stContainer]}>
-              <View>
-                <ButtonsSection {...item} />
-              </View>
-
-              <TxHistoryListView
-                accountId={accountId}
-                networkId={networkId}
-                tokenId={
-                  isAllNetworks(networkId) ? item.coingeckoId : item.address
-                }
-                tabComponent
-              />
-            </View>
-          </Flex>
-
-          {/* <View style={styles.qrContainer}>
-            <Image
-              source={require('../assets/images/qr-code.png')}
-              style={styles.qr}
-            />
-          </View> */}
+          <View
+            style={[styles.fieldSpacer, styles.stContainer, { width: '100%' }]}
+          >
+            <ButtonsSection {...item} />
+          </View>
+          <TxHistoryListView
+            accountId={accountId}
+            networkId={networkId}
+            tokenId={isAllNetworks(networkId) ? item.coingeckoId : item.address}
+          />
         </View>
       </Animated.View>
     </TouchableWithoutFeedback>
