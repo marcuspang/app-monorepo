@@ -1,4 +1,11 @@
-import { Image, StyleSheet, Text, View, type ViewProps } from 'react-native';
+import {
+  Image,
+  StyleSheet,
+  Text,
+  TouchableWithoutFeedback,
+  View,
+  type ViewProps,
+} from 'react-native';
 import Animated, {
   Easing,
   Extrapolation,
@@ -196,12 +203,14 @@ const Card = ({
     () => selectedCard.value === index,
     (shouldDisable) => {
       isDisabled.value = shouldDisable;
-      console.log({ shouldDisable });
     },
   );
 
   return (
-    <View onTouchStart={handleCardPress}>
+    <TouchableWithoutFeedback
+      onPress={handleCardPress}
+      disabled={isDisabled.value}
+    >
       <Animated.View
         style={[styles.cardContainer, { marginTop }, animatedStyle]}
       >
@@ -251,7 +260,7 @@ const Card = ({
 
             <View style={[styles.fieldSpacer, styles.stContainer]}>
               <View>
-                <ButtonsSection />
+                <ButtonsSection {...item} />
               </View>
 
               <View>
@@ -275,7 +284,7 @@ const Card = ({
 
         <View style={styles.borderOverlay} />
       </Animated.View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

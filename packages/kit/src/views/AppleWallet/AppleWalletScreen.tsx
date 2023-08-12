@@ -1,4 +1,4 @@
-import { StatusBar, StyleSheet } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -46,7 +46,6 @@ const AppleWalletScreen = () => {
     (e) => (scrollY.value = e.contentOffset.y),
   );
   const inTransition = useSharedValue(0);
-
   const { accountId, networkId, walletId } = useActiveWalletAccount();
   const { data: accountTokens, loading } = useAccountTokens({
     networkId,
@@ -54,6 +53,7 @@ const AppleWalletScreen = () => {
     useFilter: true,
     limitSize: 5,
   });
+  console.log({ accountTokens });
 
   const scrollContainerStyle = useAnimatedStyle(() => {
     if (metrics.isIOS) return {};
@@ -73,7 +73,6 @@ const AppleWalletScreen = () => {
 
   return (
     <ScrollView>
-      <StatusBar barStyle="light-content" />
       <SwipeGesture {...{ selectedCard, swipeY, inTransition }}>
         <Animated.ScrollView
           style={styles.container}

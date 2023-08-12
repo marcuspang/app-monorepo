@@ -1,5 +1,5 @@
 import type { FC } from 'react';
-import { useCallback, useContext, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 
 import { useIntl } from 'react-intl';
 
@@ -20,7 +20,13 @@ import { isLightningNetworkByImpl } from '@onekeyhq/shared/src/engine/engineCons
 import platformEnv from '@onekeyhq/shared/src/platformEnv';
 
 import backgroundApiProxy from '../../../background/instance/backgroundApiProxy';
-import { useNavigation, useNetwork, useWallet } from '../../../hooks';
+import {
+  useActiveWalletAccount,
+  useNavigation,
+  useNetwork,
+  useTokenDetailInfo,
+  useWallet,
+} from '../../../hooks';
 import { useAllNetworksSelectNetworkAccount } from '../../../hooks/useAllNetwoks';
 import {
   FiatPayModalRoutes,
@@ -32,10 +38,10 @@ import {
 } from '../../../routes/routesEnum';
 import BaseMenu from '../../Overlay/BaseMenu';
 import { SendModalRoutes } from '../../Send/enums';
-import { TokenDetailContext } from '../../TokenDetail/context';
 import { ButtonItem } from '../../TokenDetail/TokenDetailHeader/ButtonItem';
 import { FavoritedButton } from '../../TokenDetail/TokenDetailHeader/Header';
 
+import type { IAccountToken } from '../../Overview/types';
 import type { IButtonItem } from '../../TokenDetail/TokenDetailHeader/ButtonItem';
 
 type ISingleChainInfo = {
@@ -44,27 +50,27 @@ type ISingleChainInfo = {
   token: TokenType;
 };
 
-export const ButtonsSection: FC = () => {
+export const ButtonsSection: FC<IAccountToken> = ({
+  sendAddress,
+  coingeckoId,
+  symbol,
+  logoURI,
+}) => {
   const intl = useIntl();
 
   const isVerticalLayout = useIsVerticalLayout();
   const navigation = useNavigation();
-  const context = useContext(TokenDetailContext);
-  const {
-    walletId = '',
-    accountId = '',
-    networkId = '',
-    sendAddress,
-    coingeckoId,
-  } = context?.routeParams ?? {};
-
-  const { symbol, logoURI, fiatUrls } = context?.detailInfo ?? {};
+  const { accountId, networkId, walletId } = useActiveWalletAccount();
 
   const {
+    fiatUrls,
     tokens,
     loading: detailLoading,
-    defaultToken,
-  } = context?.detailInfo ?? {};
+  } = useTokenDetailInfo({
+    accountId,
+    coingeckoId,
+    networkId,
+  });
 
   const { wallet } = useWallet({
     walletId,
