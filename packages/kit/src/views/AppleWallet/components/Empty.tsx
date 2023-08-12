@@ -61,7 +61,7 @@ const Empty: FC<EmptyProps> = ({
   const isSmallScreen = useIsVerticalLayout();
 
   return (
-    <Box width="100%" flexDirection="row" justifyContent="center" {...rest}>
+    <Box width="100%" flexDirection="row" justifyContent="flex-start" {...rest}>
       <Box flex={1} py="4">
         {!!icon && renderIcon(icon)}
         {!!imageUrl && (
@@ -76,12 +76,13 @@ const Empty: FC<EmptyProps> = ({
         )}
         <Text
           typography={{ sm: 'DisplayMedium', md: 'DisplaySmall' }}
-          textAlign="center"
+          textAlign="left"
+          fontWeight="bold"
         >
           {title}
         </Text>
         <Text
-          textAlign="center"
+          textAlign="left"
           typography={{ sm: 'Body1', md: 'Body2' }}
           color="text-subdued"
           mt={2}

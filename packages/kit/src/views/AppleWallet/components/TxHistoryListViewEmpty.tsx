@@ -18,11 +18,7 @@ export function TxHistoryListViewEmpty({
     <Box py={4} flexDirection="column" alignItems="center">
       <Empty
         title={intl.formatMessage({ id: 'transaction__history_empty_title' })}
-        subTitle={intl.formatMessage({
-          id: 'transaction__history_empty_desc',
-        })}
         actionTitle={intl.formatMessage({ id: 'action__refresh' })}
-        handleAction={txDetailContext?.context.refresh ?? refresh}
         isLoading={Boolean(txDetailContext?.context.isLoading || isLoading)}
       />
     </Box>
