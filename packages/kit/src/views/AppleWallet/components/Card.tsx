@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 import {
   Image,
   StyleSheet,
@@ -18,6 +20,7 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import { Box } from '@onekeyhq/components';
 import { isAllNetworks } from '@onekeyhq/engine/src/managers/network';
 
 import { useActiveWalletAccount } from '../../../hooks';
@@ -26,7 +29,6 @@ import {
   CARD_HEADER_HEIGHT,
   CARD_HEIGHT_CLOSED,
   CARD_HEIGHT_OPEN,
-  CARD_IMAGE_HEIGTH,
   CARD_MARGIN,
   SPRING_CONFIG,
 } from '../assets/config';
@@ -51,7 +53,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     display: 'flex',
     flexDirection: 'column',
-    height: CARD_HEIGHT_OPEN - CARD_HEADER_HEIGHT - CARD_IMAGE_HEIGTH,
+    height: CARD_HEIGHT_OPEN - CARD_HEADER_HEIGHT,
     backgroundColor: '#FDC921',
   },
   title: {
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   headerSubcontainer: {
     alignItems: 'center',
   },
-  fieldSpacer: { marginTop: 32 },
+  fieldSpacer: { marginTop: 16 },
   stContainer: { flexDirection: 'row', justifyContent: 'space-between' },
   fieldLabel: {
     fontSize: 11,
@@ -114,6 +116,7 @@ const Card = ({
   swipeY,
   inTransition,
 }: CardProps) => {
+  const [isOpened, setIsOpened] = useState(false);
   const animatedHeight = useSharedValue(CARD_HEIGHT_CLOSED);
   const transY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -194,6 +197,13 @@ const Card = ({
     },
   );
 
+  useAnimatedReaction(
+    () => selectedCard.value === index,
+    (showModal) => {
+      setIsOpened(showModal);
+    },
+  );
+
   const handleCardPress = () => {
     if (selectedCard.value === -1 && !inTransition.value) {
       selectedCard.value = index;
@@ -201,11 +211,31 @@ const Card = ({
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleCardPress}>
+    <TouchableWithoutFeedback
+      onPress={handleCardPress}
+      disabled={isOpened}
+      style={{
+        height: '100%',
+      }}
+    >
       <Animated.View
-        style={[styles.cardContainer, { marginTop }, animatedStyle]}
+        style={[
+          styles.cardContainer,
+          {
+            marginTop,
+            shadowColor: 'black',
+            shadowOffset: {
+              width: 0,
+              height: 8,
+            },
+            shadowRadius: 4,
+            shadowOpacity: 0.1,
+            height: '100%',
+          },
+          animatedStyle,
+        ]}
       >
-        <View style={styles.headerContainer}>
+        <View style={[styles.headerContainer]}>
           <View
             style={{
               display: 'flex',
@@ -239,16 +269,26 @@ const Card = ({
         </View>
 
         <View style={styles.cardSubContainer}>
-          <View
-            style={[styles.fieldSpacer, styles.stContainer, { width: '100%' }]}
-          >
-            <ButtonsSection {...item} />
-          </View>
-          <TxHistoryListView
-            accountId={accountId}
-            networkId={networkId}
-            tokenId={isAllNetworks(networkId) ? item.coingeckoId : item.address}
-          />
+          {isOpened && (
+            <>
+              <View
+                style={[
+                  styles.fieldSpacer,
+                  styles.stContainer,
+                  { width: '100%' },
+                ]}
+              >
+                <ButtonsSection {...item} />
+              </View>
+              <TxHistoryListView
+                accountId={accountId}
+                networkId={networkId}
+                tokenId={
+                  isAllNetworks(networkId) ? item.coingeckoId : item.address
+                }
+              />
+            </>
+          )}
         </View>
       </Animated.View>
     </TouchableWithoutFeedback>

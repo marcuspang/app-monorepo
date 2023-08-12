@@ -1,4 +1,4 @@
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -25,12 +25,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-  },
-  backButton: {
-    height: BACK_BUTTON_HEIGHT,
-    width: BACK_BUTTON_HEIGHT,
-    backgroundColor: 'rgba(255,255,255,0.5)',
-    borderRadius: 17,
+    height: '100%',
   },
 });
 
@@ -69,7 +64,7 @@ const AppleWalletScreen = () => {
   });
 
   return (
-    <ScrollView>
+    <ScrollView style={{ height: '100%' }}>
       <SwipeGesture {...{ selectedCard, swipeY, inTransition }}>
         <Animated.ScrollView
           style={styles.container}
@@ -86,7 +81,14 @@ const AppleWalletScreen = () => {
           scrollEnabled={selectedCard.value === -1}
           decelerationRate="fast"
         >
-          <Animated.View style={metrics.isIOS && scrollContainerStyle}>
+          <Animated.View
+            style={[
+              metrics.isIOS && scrollContainerStyle,
+              {
+                height: '100%',
+              },
+            ]}
+          >
             {accountTokens.map((accountToken, i) => (
               <Card
                 key={i}
