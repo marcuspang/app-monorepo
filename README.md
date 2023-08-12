@@ -1,7 +1,7 @@
 # Zap
 
 <p align="center">
-  <img width==360 height=360 src="./docs/zap-logo.png">
+  <img width==360 height=360 src="./docs/logo.svg">
 </p>
 
 <p align="center">
@@ -9,7 +9,8 @@
 </p>
 
 ## ✨ Acknowledgements
-First and foremost,we would like to extend our gratitude to [OneKey]([url](http://onekey.so)) for making their [source code]([url](https://github.com/OneKeyHQ/app-monorepo)) open source, allowing us to build upon their implementation to create **Zap**.
+
+First and foremost,we would like to extend our gratitude to [OneKey](<[url](http://onekey.so)>) for making their [source code](<[url](https://github.com/OneKeyHQ/app-monorepo)>) open source, allowing us to build upon their implementation to create **Zap**.
 
 ## 🚀 Getting Onboard
 
@@ -91,5 +92,3 @@ Sorry, we only develop on macOS and haven't tested on other operating system pla
 | [Japanese / 日本語](docs/i18n/README.jp.md)                |
 | [French / Français](docs/i18n/README.fr.md)                |
 | [Italian / Italiano](docs/i18n/README.it.md)               |
-
-
