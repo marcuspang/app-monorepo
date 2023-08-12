@@ -89,14 +89,7 @@ export const ButtonItem = ({
           fontWeight={600}
           textTransform="capitalize"
           fontSize="lg"
-          color={
-            // eslint-disable-next-line no-nested-ternary
-            isDisabled
-              ? 'text-disabled'
-              : colourScheme === 'dark'
-              ? 'black'
-              : 'white'
-          }
+          color={isDisabled ? 'text-disabled' : 'text-default'}
         >
           {text}
         </Typography.CaptionStrong>

@@ -232,6 +232,7 @@ const Card = ({
               shadowRadius: 4,
               shadowOpacity: 0.1,
               height: '100%',
+              marginBottom: -marginTop,
             },
             {
               position:
@@ -247,7 +248,7 @@ const Card = ({
                 flexDirection: 'row',
                 justifyContent: 'space-between',
                 width: '100%',
-                height: '100%'
+                height: '100%',
               }}
             >
               <View
@@ -265,7 +266,12 @@ const Card = ({
                 />
                 <Text style={styles.title}>{item.name}</Text>
               </View>
-              <View style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <View
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center'
+                }}
+              >
                 <Text style={styles.fieldLabel}>Balance</Text>
                 <Text style={styles.fieldValue}>
                   {item.balance} {item.symbol}
@@ -281,18 +287,21 @@ const Card = ({
                   styles.stContainer,
                   { width: '100%' },
                 ]}
-              >
-                <ButtonsSection {...item} />
-              </View>
+              />
             )}
           </View>
         </Animated.View>
         {isOpened && (
-          <TxHistoryListView
-            accountId={accountId}
-            networkId={networkId}
-            tokenId={isAllNetworks(networkId) ? item.coingeckoId : item.address}
-          />
+          <>
+            <ButtonsSection {...item} />
+            <TxHistoryListView
+              accountId={accountId}
+              networkId={networkId}
+              tokenId={
+                isAllNetworks(networkId) ? item.coingeckoId : item.address
+              }
+            />
+          </>
         )}
       </View>
     </TouchableWithoutFeedback>

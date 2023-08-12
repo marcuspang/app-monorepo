@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    height: '100%',
   },
 });
 
@@ -96,7 +95,7 @@ const AppleWalletScreen = () => {
   }, [navigation]);
 
   return (
-    <ScrollView style={{ height: '100%' }}>
+    <ScrollView>
       <IconButton
         onPress={onNavigate}
         size="sm"
@@ -109,7 +108,7 @@ const AppleWalletScreen = () => {
         <Animated.ScrollView
           style={styles.container}
           contentContainerStyle={{
-            paddingTop: BACK_BUTTON_HEIGHT + insets.top + 16,
+            paddingTop: insets.top + 16,
             paddingBottom:
               CARD_HEIGHT_CLOSED +
               CARD_MARGIN * (accountTokens.length - 1) +
@@ -121,14 +120,7 @@ const AppleWalletScreen = () => {
           scrollEnabled={selectedCard.value === -1}
           decelerationRate="fast"
         >
-          <Animated.View
-            style={[
-              metrics.isIOS && scrollContainerStyle,
-              {
-                height: '100%',
-              },
-            ]}
-          >
+          <Animated.View style={[metrics.isIOS && scrollContainerStyle]}>
             {accountTokens.map((accountToken, i) => (
               <Card
                 key={i}
