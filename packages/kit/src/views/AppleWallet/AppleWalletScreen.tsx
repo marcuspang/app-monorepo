@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
 
-import { StyleSheet } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -10,7 +10,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
-import { IconButton, ScrollView } from '@onekeyhq/components';
+import { IconButton, ScrollView, Typography } from '@onekeyhq/components';
 import type { HomeRoutes } from '@onekeyhq/kit/src/routes/routesEnum';
 import {
   ManageTokenModalRoutes,
@@ -22,17 +22,15 @@ import type {
   RootRoutesParams,
 } from '@onekeyhq/kit/src/routes/types';
 
+import { FormatCurrencyNumber } from '../../components/Format';
 import {
   useAccountTokens,
+  useAccountValues,
   useActiveWalletAccount,
   useNavigation,
 } from '../../hooks';
 
-import {
-  BACK_BUTTON_HEIGHT,
-  CARD_HEIGHT_CLOSED,
-  CARD_MARGIN,
-} from './assets/config';
+import { CARD_HEIGHT_CLOSED, CARD_MARGIN } from './assets/config';
 import Card from './components/Card';
 import SwipeGesture from './components/SwipeGesture';
 import { metrics } from './constants/metrics';
@@ -70,6 +68,10 @@ const AppleWalletScreen = () => {
     useFilter: true,
     limitSize: 5,
   });
+  const accountAllValues = useAccountValues({
+    networkId,
+    accountId,
+  });
 
   const scrollContainerStyle = useAnimatedStyle(() => {
     if (metrics.isIOS) return {};
@@ -100,17 +102,33 @@ const AppleWalletScreen = () => {
       style={{ height: '100%' }}
       contentContainerStyle={{ height: '100%' }}
     >
-      <IconButton
-        onPress={onNavigate}
-        size="lg"
-        name="PlusMini"
-        ml="auto"
-        width={12}
-        height={12}
-        color="text-default"
-        type="basic"
-        mr={4}
-      />
+      <View
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          flexDirection: 'row',
+          marginLeft: 16,
+          marginRight: 16,
+        }}
+      >
+        <Typography.DisplayXLarge numberOfLines={2} isTruncated>
+          <FormatCurrencyNumber
+            decimals={2}
+            value={0}
+            convertValue={accountAllValues.value}
+          />
+        </Typography.DisplayXLarge>
+        <IconButton
+          onPress={onNavigate}
+          size="lg"
+          name="PlusMini"
+          ml="auto"
+          width={12}
+          height={12}
+          color="text-default"
+          type="basic"
+        />
+      </View>
       <SwipeGesture {...{ selectedCard, swipeY, inTransition }}>
         <Animated.ScrollView
           style={styles.container}
