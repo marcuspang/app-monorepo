@@ -49,6 +49,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
+    height: '100%',
   },
 });
 
@@ -95,14 +96,20 @@ const AppleWalletScreen = () => {
   }, [navigation]);
 
   return (
-    <ScrollView>
+    <ScrollView
+      style={{ height: '100%' }}
+      contentContainerStyle={{ height: '100%' }}
+    >
       <IconButton
         onPress={onNavigate}
-        size="sm"
+        size="lg"
         name="PlusMini"
-        type="plain"
         ml="auto"
-        mr={3}
+        width={12}
+        height={12}
+        color="text-default"
+        type="basic"
+        mr={4}
       />
       <SwipeGesture {...{ selectedCard, swipeY, inTransition }}>
         <Animated.ScrollView

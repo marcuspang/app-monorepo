@@ -288,23 +288,21 @@ const Card = ({
               {
                 display: 'flex',
                 justifyContent: 'flex-end',
-                paddingBottom: 24,
+                paddingBottom: isOpened ? 24 : 52,
               },
             ]}
           >
-            {isOpened && (
-              <View
-                style={[
-                  styles.fieldSpacer,
-                  styles.stContainer,
-                  { width: '100%' },
-                ]}
-              >
-                <Text style={{ fontSize: 24, fontFamily: 'monospace' }}>
-                  4242 4242 4242 4242
-                </Text>
-              </View>
-            )}
+            <View
+              style={[
+                styles.fieldSpacer,
+                styles.stContainer,
+                { width: '100%' },
+              ]}
+            >
+              <Text style={{ fontSize: 24, fontFamily: 'monospace' }}>
+                4242 4242 4242 4242
+              </Text>
+            </View>
           </View>
         </Animated.View>
         {isOpened && (
