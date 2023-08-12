@@ -1,12 +1,15 @@
 # Zap
 
-<div style="margin: auto; text-align: center; font-size: 20px;">
-  <strong>Instant | Intuitive | Independent<strong>
-</div>
-
 <p align="center">
   <img width==360 height=360 src="./docs/zap-logo.png">
 </p>
+
+<p align="center">
+  <strong>Instant | Intuitive | Independent<strong>
+</p>
+
+## ✨ Acknowledgements
+First and foremost,we would like to extend our gratitude to [OneKey]([url](http://onekey.so)) for making their [source code]([url](https://github.com/OneKeyHQ/app-monorepo)) open source, allowing us to build upon their implementation to create **Zap**.
 
 ## 🚀 Getting Onboard
 
@@ -89,15 +92,4 @@ Sorry, we only develop on macOS and haven't tested on other operating system pla
 | [French / Français](docs/i18n/README.fr.md)                |
 | [Italian / Italiano](docs/i18n/README.it.md)               |
 
-## ✨ Salute!
 
-[![](https://img.shields.io/github/contributors-anon/OneKeyHQ/app-monorepo?style=for-the-badge&labelColor=000)](https://github.com/OneKeyHQ/app-monorepo/graphs/contributors)
-
-<a href="https://github.com/onekeyhq/app-monorepo/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=onekeyhq/app-monorepo&max=240&columns=24"/>
-</a>
-
-## ⚖️ License
-
-OneKey is available under the [Apache-2.0 license](https://github.com/OneKeyHQ/app-monorepo/blob/onekey/LICENSE) license.
-Free for commercial and non-commercial use.
