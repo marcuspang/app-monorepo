@@ -269,7 +269,7 @@ const Card = ({
               <View
                 style={{
                   display: 'flex',
-                  justifyContent: 'center'
+                  justifyContent: 'center',
                 }}
               >
                 <Text style={styles.fieldLabel}>Balance</Text>
@@ -279,7 +279,16 @@ const Card = ({
               </View>
             </View>
           </View>
-          <View style={[styles.cardSubContainer]}>
+          <View
+            style={[
+              styles.cardSubContainer,
+              {
+                display: 'flex',
+                justifyContent: 'flex-end',
+                paddingBottom: 24,
+              },
+            ]}
+          >
             {isOpened && (
               <View
                 style={[
@@ -287,7 +296,11 @@ const Card = ({
                   styles.stContainer,
                   { width: '100%' },
                 ]}
-              />
+              >
+                <Text style={{ fontSize: 24, fontFamily: 'monospace' }}>
+                  4242 4242 4242 4242
+                </Text>
+              </View>
             )}
           </View>
         </Animated.View>
