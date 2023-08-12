@@ -1,4 +1,5 @@
-import { StatusBar, StyleSheet, View } from 'react-native';
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+import { StatusBar, StyleSheet } from 'react-native';
 import Animated, {
   Extrapolation,
   interpolate,
@@ -18,7 +19,6 @@ import {
   CARD_HEIGHT_CLOSED,
   CARD_MARGIN,
 } from './assets/config';
-import { theme } from './assets/theme';
 import { BackButton } from './components/BackButton';
 import Card from './components/Card';
 import SwipeGesture from './components/SwipeGesture';

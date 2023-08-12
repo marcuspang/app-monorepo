@@ -1,8 +1,9 @@
+import { useNavigation } from '@react-navigation/core';
 import {
   Image,
   StyleSheet,
   Text,
-  TouchableWithoutFeedback,
+  TouchableHighlight,
   View,
   type ViewProps,
 } from 'react-native';
@@ -18,6 +19,8 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
+import { useActiveWalletAccount } from '../../../hooks';
+import { HomeRoutes } from '../../../routes/routesEnum';
 import {
   BACK_BUTTON_HEIGHT,
   CARD_HEADER_HEIGHT,
@@ -30,6 +33,7 @@ import {
 import { theme } from '../assets/theme';
 import { metrics } from '../constants/metrics';
 
+import type { NavigationProps } from '../../Wallet/AssetsList';
 import type { CardProps } from '../assets/types';
 
 const styles = StyleSheet.create({
@@ -108,6 +112,9 @@ const Card = ({
   swipeY,
   inTransition,
 }: CardProps) => {
+  const navigation = useNavigation<NavigationProps>();
+  const { accountId, networkId, walletId } = useActiveWalletAccount();
+
   const animatedHeight = useSharedValue(CARD_HEIGHT_CLOSED);
   const transY = useSharedValue(0);
   const scale = useSharedValue(1);
@@ -189,12 +196,42 @@ const Card = ({
 
   const handleCardPress = () => {
     if (selectedCard.value === -1 && !inTransition.value) {
+      console.log('not card open press');
       selectedCard.value = index;
+    }
+    console.log('press');
+  };
+
+  const handleCardPressOut = () => {
+    if (selectedCard.value === index) {
+      navigation.navigate(HomeRoutes.ScreenTokenDetail, {
+        walletId,
+        accountId,
+        networkId,
+        coingeckoId: item.coingeckoId,
+        sendAddress: item.sendAddress,
+        tokenAddress: item.address,
+        // historyFilter: filter,
+        price: item.price,
+        price24h: item.price24h,
+        symbol: item.symbol,
+        name: item.name,
+        logoURI: item.logoURI,
+      });
     }
   };
 
   return (
-    <TouchableWithoutFeedback onPress={handleCardPress} disabled={false}>
+    <TouchableHighlight
+      onPress={handleCardPress}
+      onPressOut={handleCardPressOut}
+      pressRetentionOffset={{
+        top: 0,
+        bottom: 0,
+        left: 0,
+        right: 0,
+      }}
+    >
       <Animated.View
         style={[
           styles.cardContainer,
@@ -205,7 +242,10 @@ const Card = ({
           animatedStyle,
         ]}
       >
-        <View style={styles.headerContainer}>
+        <TouchableHighlight
+          onPress={() => console.log('touchable')}
+          style={styles.headerContainer}
+        >
           <View
             style={{
               display: 'flex',
@@ -221,7 +261,7 @@ const Card = ({
             />
             <Text style={styles.title}>{item.name}</Text>
           </View>
-        </View>
+        </TouchableHighlight>
 
         <View style={styles.cardSubContainer}>
           <Flex>
@@ -261,7 +301,7 @@ const Card = ({
 
         <View style={styles.borderOverlay} />
       </Animated.View>
-    </TouchableWithoutFeedback>
+    </TouchableHighlight>
   );
 };
 
