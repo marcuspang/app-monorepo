@@ -177,6 +177,7 @@ const Card = ({
         }
       } else {
         if (previousSelection === index) {
+          console.log({ previousSelection, currentSelection });
           transY.value = withSpring(0, SPRING_CONFIG.CLOSE);
         } else {
           const wasAbove = (previousSelection ?? 0) > index;
@@ -272,9 +273,11 @@ const Card = ({
                   justifyContent: 'center',
                 }}
               >
-                <Text style={styles.fieldLabel}>Balance</Text>
                 <Text style={styles.fieldValue}>
-                  {item.balance} {item.symbol}
+                  {(+item.balance).toFixed(5)} {item.symbol}
+                </Text>
+                <Text style={styles.fieldLabel}>
+                  {(+item.balance / (+item.value || 1)).toFixed(5)} USD
                 </Text>
               </View>
             </View>
