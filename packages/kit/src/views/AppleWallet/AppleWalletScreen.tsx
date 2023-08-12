@@ -53,7 +53,6 @@ const AppleWalletScreen = () => {
     useFilter: true,
     limitSize: 5,
   });
-  console.log({ accountTokens });
 
   const scrollContainerStyle = useAnimatedStyle(() => {
     if (metrics.isIOS) return {};
@@ -101,11 +100,6 @@ const AppleWalletScreen = () => {
           </Animated.View>
         </Animated.ScrollView>
       </SwipeGesture>
-      <BackButton
-        color="rgba(0,0,0,0.8)"
-        style={styles.backButton}
-        iconSize={26}
-      />
     </ScrollView>
   );
 };

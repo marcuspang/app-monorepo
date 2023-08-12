@@ -263,24 +263,6 @@ export const ButtonsSection: FC<IAccountToken> = ({
         icon: 'ArrowsRightLeftSolid',
         visible: () => showSwapOption,
       },
-      {
-        id: 'action__buy',
-        onPress: onBuy,
-        icon: 'PlusMini',
-        visible: () =>
-          !platformEnv.isAppleStoreEnv &&
-          showMoreOption &&
-          !!fiatUrls?.[networkId]?.buy,
-      },
-      {
-        id: 'action__sell',
-        onPress: onSell,
-        icon: 'BanknotesMini',
-        visible: () =>
-          !platformEnv.isAppleStoreEnv &&
-          showMoreOption &&
-          !!fiatUrls?.[networkId]?.sell,
-      },
     ]
       .map((t) => ({ ...t, isDisabled: loading }))
       .filter((item) => !item.visible || item?.visible?.()) as IButtonItem[];

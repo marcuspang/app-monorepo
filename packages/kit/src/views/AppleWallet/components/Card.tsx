@@ -90,13 +90,6 @@ const styles = StyleSheet.create({
     borderRadius: 6,
   },
   qr: { width: 140, height: 140 },
-  borderOverlay: {
-    ...StyleSheet.absoluteFillObject,
-    position: 'absolute',
-    borderRadius: 12,
-    borderWidth: 1,
-    borderColor: theme.colors.border,
-  },
 });
 
 export const Flex = ({ children, style, ...rest }: ViewProps) => (
@@ -281,8 +274,6 @@ const Card = ({
             />
           </View> */}
         </View>
-
-        <View style={styles.borderOverlay} />
       </Animated.View>
     </TouchableWithoutFeedback>
   );

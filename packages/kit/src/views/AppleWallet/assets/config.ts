@@ -3,7 +3,7 @@ import { metrics } from '../constants/metrics';
 export const CARD_HEIGHT_CLOSED = 224;
 export const CARD_HEIGHT_OPEN = 590;
 export const CARD_IMAGE_HEIGTH = 165;
-export const CARD_HEADER_HEIGHT = 59;
+export const CARD_HEADER_HEIGHT = 60;
 export const CARD_MARGIN = 70;
 export const BACK_BUTTON_HEIGHT = 40;
 export const CLOSE_THRESHOLD = metrics.screenHeight * 0.11;
