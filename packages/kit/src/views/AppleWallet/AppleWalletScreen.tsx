@@ -10,6 +10,8 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { ScrollView } from '@onekeyhq/components';
 
+import { useAccountTokens, useActiveWalletAccount } from '../../hooks';
+
 import {
   BACK_BUTTON_HEIGHT,
   CARDS,
@@ -45,6 +47,14 @@ const AppleWalletScreen = () => {
     (e) => (scrollY.value = e.contentOffset.y),
   );
   const inTransition = useSharedValue(0);
+
+  const { accountId, networkId, walletId } = useActiveWalletAccount();
+  const { data: accountTokens, loading } = useAccountTokens({
+    networkId,
+    accountId,
+    useFilter: true,
+    limitSize: 5,
+  });
 
   const scrollContainerStyle = useAnimatedStyle(() => {
     if (metrics.isIOS) return {};
@@ -82,10 +92,10 @@ const AppleWalletScreen = () => {
           decelerationRate="fast"
         >
           <Animated.View style={metrics.isIOS && scrollContainerStyle}>
-            {CARDS.map((e, i) => (
+            {accountTokens.map((accountToken, i) => (
               <Card
                 key={i}
-                item={e}
+                item={accountToken}
                 index={i}
                 {...{ selectedCard, scrollY, swipeY, inTransition }}
               />

@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-expressions */
-/* eslint-disable no-unused-expressions */
-
 import {
   Image,
   StyleSheet,
@@ -35,7 +32,6 @@ import { metrics } from '../constants/metrics';
 
 import type { CardProps } from '../assets/types';
 
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: 12,
@@ -59,6 +55,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 16,
     height: CARD_HEADER_HEIGHT,
+    background: 'rgb(0,212,255)',
   },
   headerSubcontainer: {
     alignItems: 'center',
@@ -76,8 +73,10 @@ const styles = StyleSheet.create({
     color: theme.colors.white,
   },
   image: {
-    height: CARD_IMAGE_HEIGTH,
-    width: '100%',
+    height: 40,
+    width: 40,
+    borderRadius: 1000,
+    marginRight: 8,
   },
   qrContainer: {
     alignSelf: 'center',
@@ -94,7 +93,6 @@ const styles = StyleSheet.create({
     borderColor: theme.colors.border,
   },
 });
-/* eslint-enable @typescript-eslint/no-unsafe-call */
 
 export const Flex = ({ children, style, ...rest }: ViewProps) => (
   <View style={[{ flex: 1 }, style]} {...rest}>
@@ -164,8 +162,8 @@ const Card = ({
 
         if (isSelected) {
           animatedHeight.value = withTiming(CARD_HEIGHT_OPEN);
-        } else {
-          slideUp && (scale.value = withTiming(0.9));
+        } else if (slideUp) {
+          scale.value = withTiming(0.9);
         }
       } else {
         if (previousSelection === index) {
@@ -178,11 +176,13 @@ const Card = ({
               easing: Easing.out(Easing.quad),
             }),
           );
-          wasAbove && (scale.value = withTiming(1));
+          if (wasAbove) {
+            scale.value = withTiming(1);
+          }
         }
-
-        animatedHeight.value > CARD_HEIGHT_CLOSED &&
-          (animatedHeight.value = withTiming(CARD_HEIGHT_CLOSED));
+        if (animatedHeight.value > CARD_HEIGHT_CLOSED) {
+          animatedHeight.value = withTiming(CARD_HEIGHT_CLOSED);
+        }
       }
     },
   );
@@ -200,55 +200,63 @@ const Card = ({
           styles.cardContainer,
           {
             marginTop,
-            backgroundColor: item.bg,
+            backgroundColor: 'gray',
           },
           animatedStyle,
         ]}
       >
         <View style={styles.headerContainer}>
-          <Text style={styles.title}>{item.title}</Text>
-          <View style={styles.headerSubcontainer}>
-            <Text style={styles.fieldLabel}>{item.headerField.label}</Text>
-            <Text style={styles.fieldValue}>{item.headerField.value}</Text>
+          <View
+            style={{
+              display: 'flex',
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <Image
+              source={{
+                uri: item.logoURI || '',
+              }}
+              style={styles.image}
+            />
+            <Text style={styles.title}>{item.name}</Text>
           </View>
         </View>
-        <Image resizeMode="cover" source={item.image} style={styles.image} />
+
         <View style={styles.cardSubContainer}>
           <Flex>
             <View style={styles.fieldSpacer}>
-              <Text style={styles.fieldLabel}>{item.auxiliaryField.label}</Text>
-              <Text style={[styles.fieldValue, { textTransform: 'uppercase' }]}>
-                {item.auxiliaryField.value}
-              </Text>
+              <Text style={styles.fieldLabel}>Balance</Text>
+              <Text style={styles.fieldValue}>{item.balance}</Text>
             </View>
 
             <View style={[styles.fieldSpacer, styles.stContainer]}>
               <View>
-                <Text style={styles.fieldLabel}>
+                {/* <Text style={styles.fieldLabel}>
                   {item.secondaryField.label}
                 </Text>
                 <Text style={styles.fieldValue}>
                   {item.secondaryField.value}
-                </Text>
+                </Text> */}
               </View>
 
               <View>
-                <Text style={styles.fieldLabel}>
+                {/* <Text style={styles.fieldLabel}>
                   {item.tertiaryField.label}
                 </Text>
                 <Text style={[styles.fieldValue, { textAlign: 'right' }]}>
                   {item.tertiaryField.value}
-                </Text>
+                </Text> */}
               </View>
             </View>
           </Flex>
 
-          <View style={styles.qrContainer}>
+          {/* <View style={styles.qrContainer}>
             <Image
               source={require('../assets/images/qr-code.png')}
               style={styles.qr}
             />
-          </View>
+          </View> */}
         </View>
 
         <View style={styles.borderOverlay} />
