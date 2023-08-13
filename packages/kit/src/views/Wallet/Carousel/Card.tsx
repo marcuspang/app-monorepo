@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
   },
   bgImg: {
     resizeMode: 'cover',
-    height: '100%'
+    height: '100%',
   },
 });
 
@@ -86,7 +86,6 @@ export const Card: React.FC<
   const bgImgUrl = bgImgUrls[index % bgImgUrls.length];
 
   return (
-
     <LongPressGestureHandler>
       <View
         style={{
@@ -167,9 +166,10 @@ export const Card: React.FC<
               style={[
                 styles.cardSubContainer,
                 {
+                  height: '100%',
                   display: 'flex',
                   justifyContent: 'flex-end',
-                  paddingBottom: 52,
+                  paddingBottom: 76,
                 },
               ]}
             >
