@@ -15,6 +15,12 @@
 ## ❓ What is Zap?
 Zap is an all-in-one **mobile-first** approach to a Multi-Coin Wallet, supporting non-custodial EVMs and Lightning wallets for every user wanting to get into Web3 and for power users as well. 
 
+### Demo Video
+
+<a href="http://www.youtube.com/watch?feature=player_embedded&v=fUq8mrxaibM" target="_blank">
+ <img src="http://i3.ytimg.com/vi/fUq8mrxaibM/hqdefault.jpg" alt="Watch the video" width="240" height="180" border="10" />
+</a>
+
 ## ✨ Acknowledgements
 
 We would like to extend our gratitude to [OneKey](<[url](http://onekey.so)>) for making their [source code](<[url](https://github.com/OneKeyHQ/app-monorepo)>) open source, allowing us to build upon their implementation to create **Zap**.
