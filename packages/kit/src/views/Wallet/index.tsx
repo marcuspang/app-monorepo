@@ -2,15 +2,11 @@ import type { FC } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useIntl } from 'react-intl';
+import { View } from 'react-native';
 import { useDebouncedCallback } from 'use-debounce';
 
 import type { ForwardRefHandle } from '@onekeyhq/app/src/views/NestedTabView/NestedTabView';
-import {
-  Box,
-  Center,
-  useIsVerticalLayout,
-  useUserDevice,
-} from '@onekeyhq/components';
+import { Box, Center, useIsVerticalLayout } from '@onekeyhq/components';
 import { Tabs } from '@onekeyhq/components/src/CollapsibleTabView';
 import { isAllNetworks } from '@onekeyhq/engine/src/managers/network';
 import {
@@ -18,7 +14,6 @@ import {
   useAppSelector,
 } from '@onekeyhq/kit/src/hooks/redux';
 import RefreshLightningNetworkToken from '@onekeyhq/kit/src/views/LightningNetwork/RefreshLightningNetworkToken';
-import { MAX_PAGE_CONTAINER_WIDTH } from '@onekeyhq/shared/src/config/appConfig';
 import { isLightningNetworkByNetworkId } from '@onekeyhq/shared/src/engine/engineConsts';
 import debugLogger from '@onekeyhq/shared/src/logger/debugLogger';
 import platformEnv from '@onekeyhq/shared/src/platformEnv';
@@ -33,12 +28,10 @@ import { setHomeTabName } from '../../store/reducers/status';
 import { GuideToPushFirstTimeCheck } from '../PushNotification/GuideToPushFirstTime';
 import { TxHistoryListView } from '../TxHistory/TxHistoryListView';
 
-import AccountInfo, {
-  FIXED_HORIZONTAL_HEDER_HEIGHT,
-  FIXED_VERTICAL_HEADER_HEIGHT,
-} from './AccountInfo';
+import AccountInfo from './AccountInfo';
 import AssetsList from './AssetsList';
 import { BottomView } from './BottomView';
+import CardCarousel from './Carousel/CardCarousel';
 import NFTList from './NFT/NFTList';
 import ToolsPage from './Tools';
 import { WalletHomeTabEnum } from './type';
@@ -50,7 +43,6 @@ const WalletTabs: FC = () => {
   const intl = useIntl();
   const ref = useRef<ForwardRefHandle>(null);
   const currentIndexRef = useRef<number>(0);
-  const { screenWidth } = useUserDevice();
   const isVerticalLayout = useIsVerticalLayout();
   const homeTabName = useAppSelector((s) => s.status.homeTabName);
   const { wallet, network, accountId, networkId, walletId } =
@@ -129,20 +121,8 @@ const WalletTabs: FC = () => {
   const usedTabs = useMemo(() => {
     const defaultTabs = [
       {
-        name: WalletHomeTabEnum.Tokens,
-        tab: tokensTab,
-      },
-      {
-        name: WalletHomeTabEnum.Collectibles,
-        tab: nftTab,
-      },
-      {
         name: WalletHomeTabEnum.History,
         tab: historyTab,
-      },
-      {
-        name: WalletHomeTabEnum.Tools,
-        tab: toolsTab,
       },
     ];
     return defaultTabs.filter((t) => {
@@ -228,38 +208,7 @@ const WalletTabs: FC = () => {
     [networkId],
   );
 
-  const walletTabsContainer = (
-    <Tabs.Container
-      // IMPORTANT: key is used to force re-render when the tab is changed
-      // otherwise android app will crash when tabs are changed
-      key={platformEnv.isNativeAndroid ? `${tabContents.length}` : undefined}
-      canOpenDrawer
-      initialTabName={homeTabName}
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-      onIndexChange={onIndexChange}
-      onStartChange={() => {
-        if (timer.current) clearTimeout(timer.current);
-      }}
-      renderHeader={AccountHeader}
-      headerHeight={
-        isVerticalLayout
-          ? FIXED_VERTICAL_HEADER_HEIGHT
-          : FIXED_HORIZONTAL_HEDER_HEIGHT
-      }
-      ref={ref}
-      containerStyle={{
-        maxWidth: MAX_PAGE_CONTAINER_WIDTH,
-        // reduce the width on iPad, sidebar's width is 244
-        width: isVerticalLayout ? screenWidth : screenWidth - 224,
-        marginHorizontal: 'auto', // Center align vertically
-        alignSelf: 'center',
-        flex: 1,
-      }}
-    >
-      {tabContents}
-    </Tabs.Container>
-  );
+  const walletTabsContainer = <View>{tabContents}</View>;
 
   if (!wallet) return null;
 
@@ -310,6 +259,13 @@ const Wallet = () => {
 
   return (
     <>
+      <View
+        style={{
+          alignItems: 'center',
+        }}
+      >
+        <CardCarousel />
+      </View>
       <Box flex={1}>
         <IdentityAssertion>
           <WalletTabs />

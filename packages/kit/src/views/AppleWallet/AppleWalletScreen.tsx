@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { useCallback } from 'react';
 
 import { StyleSheet, View } from 'react-native';
@@ -34,14 +36,6 @@ import { CARD_HEIGHT_CLOSED, CARD_MARGIN } from './assets/config';
 import Card from './components/Card';
 import SwipeGesture from './components/SwipeGesture';
 import { metrics } from './constants/metrics';
-
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-type NavigationProps = NativeStackNavigationProp<
-  RootRoutesParams,
-  RootRoutes.Main
-> &
-  NativeStackNavigationProp<HomeRoutesParams, HomeRoutes.FullTokenListScreen>;
 
 const styles = StyleSheet.create({
   container: {
