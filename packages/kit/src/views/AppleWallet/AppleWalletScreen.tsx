@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
 import { useCallback } from 'react';
 
 import { StyleSheet, View } from 'react-native';
@@ -34,14 +36,6 @@ import { CARD_HEIGHT_CLOSED, CARD_MARGIN } from './assets/config';
 import Card from './components/Card';
 import SwipeGesture from './components/SwipeGesture';
 import { metrics } from './constants/metrics';
-
-import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
-
-type NavigationProps = NativeStackNavigationProp<
-  RootRoutesParams,
-  RootRoutes.Main
-> &
-  NativeStackNavigationProp<HomeRoutesParams, HomeRoutes.FullTokenListScreen>;
 
 const styles = StyleSheet.create({
   container: {
@@ -97,11 +91,6 @@ const AppleWalletScreen = () => {
     });
   }, [navigation]);
 
-  const linearGradients = [
-    'linear-gradient( 111.4deg, rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58%)',
-    'linear-gradient( 111.4deg, #a1f694 1%, #717bee 58%)',
-    'linear-gradient( 111.4deg, #3a99ed 1%, #f38cee 58%)',
-  ];
   return (
     <ScrollView
       style={{ height: '100%' }}

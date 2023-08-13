@@ -25,47 +25,5 @@ const config: TabRouteConfig = {
     }),
     name,
   ),
-  children: [
-    {
-      name: HomeRoutes.ScreenTokenDetail,
-      component: TokenDetail,
-      alwaysShowBackButton: true,
-    },
-    {
-      name: HomeRoutes.FullTokenListScreen,
-      component: FullTokenList,
-      i18nTitle: 'asset__tokens',
-    },
-    {
-      name: HomeRoutes.Revoke,
-      component: RevokePage,
-      alwaysShowBackButton: true,
-    },
-    {
-      name: HomeRoutes.RevokeRedirect,
-      component: RevokeRedirectPage,
-    },
-    {
-      name: HomeRoutes.RevokeRedirect2,
-      component: RevokeRedirectPage,
-    },
-    {
-      name: HomeRoutes.NFTMarketCollectionScreen,
-      component: NFTMarketCollectionScreen,
-    },
-    {
-      name: HomeRoutes.NFTPNLScreen,
-      component: PNLDetailScreen,
-      alwaysShowBackButton: true,
-    },
-    {
-      name: HomeRoutes.OverviewDefiListScreen,
-      component: OverviewDefiListScreen,
-    },
-    {
-      name: HomeRoutes.BulkSender,
-      component: BulkSender,
-    },
-  ],
 };
 export default config;

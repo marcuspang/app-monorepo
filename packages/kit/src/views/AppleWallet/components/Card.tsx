@@ -21,7 +21,6 @@ import Animated, {
   withTiming,
 } from 'react-native-reanimated';
 
-import { Box } from '@onekeyhq/components';
 import { isAllNetworks } from '@onekeyhq/engine/src/managers/network';
 import platformEnv from '@onekeyhq/shared/src/platformEnv';
 
@@ -119,6 +118,18 @@ export const Flex = ({ children, style, ...rest }: ViewProps) => (
   </View>
 );
 
+export const linearGradients = [
+  'linear-gradient( 111.4deg, rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58%)',
+  'linear-gradient( 111.4deg, #a1f694 1%, #717bee 58%)',
+  'linear-gradient( 111.4deg, #3a99ed 1%, #f38cee 58%)',
+];
+
+export const bgImgUrls = [
+  require('../assets/hexagons.png'),
+  require('../assets/45-degree-fabric-light.png'),
+  require('../assets/gplay.png'),
+];
+
 const Card = ({
   item,
   index,
@@ -135,18 +146,8 @@ const Card = ({
   const spread = 70 * index;
   const spreadOffset = Math.min(2.5 * index * index, spread);
   const { accountId, networkId } = useActiveWalletAccount();
-  const bgImgUrls = [
-    require('../assets/hexagons.png'),
-    require('../assets/45-degree-fabric-light.png'),
-    require('../assets/gplay.png'),
-  ];
   const bgImgUrl = bgImgUrls[index % bgImgUrls.length];
 
-  const linearGradients = [
-    'linear-gradient( 111.4deg, rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58%)',
-    'linear-gradient( 111.4deg, #a1f694 1%, #717bee 58%)',
-    'linear-gradient( 111.4deg, #3a99ed 1%, #f38cee 58%)',
-  ];
   const linearGradient = linearGradients[index % linearGradients.length];
 
   const animatedStyle = useAnimatedStyle(() => ({

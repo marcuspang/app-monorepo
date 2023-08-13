@@ -2,25 +2,18 @@
 /* eslint-disable @typescript-eslint/restrict-template-expressions */
 import * as React from 'react';
 
-import { View, useWindowDimensions } from 'react-native';
+import { Text, View, useWindowDimensions } from 'react-native';
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
   useSharedValue,
 } from 'react-native-reanimated';
-import Carousel from 'react-native-reanimated-carousel';
 
-import { SBItem } from './SBItem';
+import { useAccountTokens, useActiveWalletAccount } from '../../../hooks';
+import Carousel from '../../AppleWallet/components/Carousel';
 
-const colors = [
-  '#26292E',
-  '#899F9C',
-  '#B3C680',
-  '#5C6265',
-  '#F5D399',
-  '#F1F1F1',
-];
+import { Card } from './Card';
 
 function CardCarousel() {
   const { width } = useWindowDimensions();
@@ -30,6 +23,13 @@ function CardCarousel() {
     width,
     height: width * 0.6,
   } as const;
+  const { accountId, networkId, walletId } = useActiveWalletAccount();
+  const { data: accountTokens, loading } = useAccountTokens({
+    networkId,
+    accountId,
+    useFilter: true,
+    limitSize: 5,
+  });
 
   return (
     <View
@@ -40,20 +40,23 @@ function CardCarousel() {
       <Carousel
         {...baseOptions}
         style={{
-          width: width * 0.86,
+          width,
         }}
         loop
         snapEnabled
-        onProgressChange={(_, absoluteProgress) =>
-          (progressValue.value = absoluteProgress)
-        }
+        onProgressChange={(a, absoluteProgress) => {
+          if (a !== 0 && absoluteProgress !== 0) {
+            progressValue.value = absoluteProgress;
+          }
+        }}
         mode="parallax"
         modeConfig={{
-          parallaxScrollingScale: 0.9,
-          parallaxScrollingOffset: 50,
+          parallaxScrollingScale: 0.8,
+          parallaxAdjacentItemScale: 0.5,
+          // parallaxScrollingOffset: 50,
         }}
-        data={colors}
-        renderItem={({ index }) => <SBItem index={index} />}
+        data={accountTokens}
+        renderItem={({ index, item }) => <Card index={index} item={item} />}
       />
       {!!progressValue && (
         <View
@@ -64,14 +67,14 @@ function CardCarousel() {
             alignSelf: 'center',
           }}
         >
-          {colors.map((backgroundColor, index) => (
+          {accountTokens.map((_, index) => (
             <PaginationItem
-              backgroundColor={backgroundColor}
+              backgroundColor="black"
               animValue={progressValue}
               index={index}
               key={index}
               isRotate={false}
-              length={colors.length}
+              length={accountTokens.length}
             />
           ))}
         </View>
