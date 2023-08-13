@@ -10,18 +10,20 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 
+import { HStack } from '@onekeyhq/components/src';
+
 import { useAccountTokens, useActiveWalletAccount } from '../../../hooks';
 import Carousel from '../../AppleWallet/components/Carousel';
 
 import { Card } from './Card';
 
 function CardCarousel() {
-  const { width } = useWindowDimensions();
+  const { width, height } = useWindowDimensions();
   const progressValue = useSharedValue<number>(0);
   const baseOptions = {
     vertical: false,
     width,
-    height: width * 0.6,
+    height: height * 0.5,
   } as const;
   const { accountId, networkId, walletId } = useActiveWalletAccount();
   const { data: accountTokens, loading } = useAccountTokens({
@@ -30,6 +32,7 @@ function CardCarousel() {
     useFilter: true,
     limitSize: 5,
   });
+  console.log({ accountTokens });
 
   return (
     <View
@@ -59,12 +62,10 @@ function CardCarousel() {
         renderItem={({ index, item }) => <Card index={index} item={item} />}
       />
       {!!progressValue && (
-        <View
+        <HStack
           style={{
-            flexDirection: 'row',
             justifyContent: 'space-between',
             width: 100,
-            alignSelf: 'center',
           }}
         >
           {accountTokens.map((_, index) => (
@@ -77,7 +78,7 @@ function CardCarousel() {
               length={accountTokens.length}
             />
           ))}
-        </View>
+        </HStack>
       )}
     </View>
   );

@@ -13,16 +13,11 @@ import Animated, {
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 import { IconButton, ScrollView, Typography } from '@onekeyhq/components';
-import type { HomeRoutes } from '@onekeyhq/kit/src/routes/routesEnum';
 import {
   ManageTokenModalRoutes,
   ModalRoutes,
   RootRoutes,
 } from '@onekeyhq/kit/src/routes/routesEnum';
-import type {
-  HomeRoutesParams,
-  RootRoutesParams,
-} from '@onekeyhq/kit/src/routes/types';
 
 import { FormatCurrencyNumber } from '../../components/Format';
 import {
@@ -83,7 +78,7 @@ const AppleWalletScreen = () => {
     };
   });
 
-  const navigation = useNavigation<NavigationProps>();
+  const navigation = useNavigation();
   const onNavigate = useCallback(() => {
     navigation.navigate(RootRoutes.Modal, {
       screen: ModalRoutes.ManageToken,
