@@ -97,6 +97,11 @@ const AppleWalletScreen = () => {
     });
   }, [navigation]);
 
+  const linearGradients = [
+    'linear-gradient( 111.4deg, rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58%)',
+    'linear-gradient( 111.4deg, #a1f694 1%, #717bee 58%)',
+    'linear-gradient( 111.4deg, #3a99ed 1%, #f38cee 58%)',
+  ];
   return (
     <ScrollView
       style={{ height: '100%' }}

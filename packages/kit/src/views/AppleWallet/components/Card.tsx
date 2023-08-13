@@ -23,6 +23,7 @@ import Animated, {
 
 import { Box } from '@onekeyhq/components';
 import { isAllNetworks } from '@onekeyhq/engine/src/managers/network';
+import platformEnv from '@onekeyhq/shared/src/platformEnv';
 
 import {
   FormatBalance,
@@ -49,7 +50,6 @@ const styles = StyleSheet.create({
   cardContainer: {
     borderRadius: 20,
     border: 0,
-    position: 'absolute',
     width: '100%',
     overflow: 'hidden',
     borderWidth: 1,
@@ -75,8 +75,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     height: CARD_HEADER_HEIGHT,
     border: 0,
-    // backgroundImage:
-    //   'linear-gradient( 111.4deg,  rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58% )',
+    backgroundColor: 'transparent',
   },
   headerSubcontainer: {
     alignItems: 'center',
@@ -110,9 +109,7 @@ const styles = StyleSheet.create({
   },
   qr: { width: 140, height: 140 },
   bgImg: {
-    flex: 1,
-    resizeMode: 'cover', // or 'stretch' or 'contain'
-    justifyContent: 'center', // optional
+    resizeMode: 'cover',
   },
 });
 
@@ -146,9 +143,9 @@ const Card = ({
   const bgImgUrl = bgImgUrls[index % bgImgUrls.length];
 
   const linearGradients = [
-    'linear-gradient( 111.4deg,  rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58% )',
-    'linear-gradient( 111.4deg,  #a1f694 1%, #717bee 58% )',
-    'linear-gradient( 111.4deg,  #3a99ed 1%, #f38cee 58% )',
+    'linear-gradient( 111.4deg, rgba(238,113,113,1) 1%, rgba(246,215,148,1) 58%)',
+    'linear-gradient( 111.4deg, #a1f694 1%, #717bee 58%)',
+    'linear-gradient( 111.4deg, #3a99ed 1%, #f38cee 58%)',
   ];
   const linearGradient = linearGradients[index % linearGradients.length];
 
@@ -246,7 +243,7 @@ const Card = ({
         height: '100%',
       }}
     >
-      <View>
+      <View style={{}}>
         <Animated.View
           style={[
             styles.cardContainer,
@@ -261,74 +258,66 @@ const Card = ({
               shadowOpacity: 0.1,
               height: '100%',
               marginBottom: -marginTop,
-            },
-            {
               position:
                 isOpened && !inTransition.value ? 'relative' : 'absolute',
+              backgroundImage: linearGradient,
             },
             animatedStyle,
           ]}
         >
-          <View
-            style={{
-              ...styles.headerContainer,
-              backgroundImage: linearGradient,
-            }}
-          >
-            <View
-              style={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                width: '100%',
-                height: '100%',
-              }}
-            >
+          <ImageBackground source={{ uri: bgImgUrl }} style={styles.bgImg}>
+            <View style={styles.headerContainer}>
               <View
                 style={{
                   display: 'flex',
                   flexDirection: 'row',
-                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                  width: '100%',
+                  height: '100%',
                 }}
               >
-                <Image
-                  source={{
-                    uri: item.logoURI || '',
+                <View
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
                   }}
-                  style={styles.image}
-                />
-                <Text style={styles.title}>{item.name}</Text>
-              </View>
-              <View
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                }}
-              >
-                <FormatBalance
-                  balance={item.balance}
-                  suffix={item.symbol}
-                  formatOptions={{
-                    fixed: 4,
-                  }}
-                  render={(ele) => <Text style={styles.fieldValue}>{ele}</Text>}
-                />
-                <Text style={styles.fieldLabel}>
-                  <FormatCurrencyNumber
-                    decimals={2}
-                    value={0}
-                    convertValue={+item.usdValue}
+                >
+                  <Image
+                    source={{
+                      uri: item.logoURI || '',
+                    }}
+                    style={styles.image}
                   />
-                </Text>
+                  <Text style={styles.title}>{item.name}</Text>
+                </View>
+                <View
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <FormatBalance
+                    balance={item.balance}
+                    suffix={item.symbol}
+                    formatOptions={{
+                      fixed: 4,
+                    }}
+                    render={(ele) => (
+                      <Text style={styles.fieldValue}>{ele}</Text>
+                    )}
+                  />
+                  <Text style={styles.fieldLabel}>
+                    <FormatCurrencyNumber
+                      decimals={2}
+                      value={0}
+                      convertValue={+item.usdValue}
+                    />
+                  </Text>
+                </View>
               </View>
             </View>
-          </View>
 
-          {/* <ImageBackground source={{ uri: bgImgUrl }} style={styles.bgImg}> */}
-          <ImageBackground
-            source={{ uri: bgImgUrl }}
-            style={{ backgroundImage: linearGradient, ...styles.bgImg }}
-          >
             <View
               style={[
                 styles.cardSubContainer,
@@ -339,17 +328,14 @@ const Card = ({
                 },
               ]}
             >
-              <View
-                style={[
-                  styles.fieldSpacer,
-                  styles.stContainer,
-                  { width: '100%' },
-                ]}
+              <Text
+                style={{
+                  fontSize: 24,
+                  fontFamily: platformEnv.isNativeIOS ? 'Menlo' : 'monospace',
+                }}
               >
-                <Text style={{ fontSize: 24, fontFamily: 'monospace' }}>
-                  4242 4242 4242 4242
-                </Text>
-              </View>
+                4242 4242 4242 4242
+              </Text>
             </View>
           </ImageBackground>
         </Animated.View>

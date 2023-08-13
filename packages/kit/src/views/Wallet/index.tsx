@@ -2,6 +2,8 @@ import type { FC } from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { useIntl } from 'react-intl';
+import { Text, View } from 'react-native';
+import Carousel from 'react-native-reanimated-carousel';
 import { useDebouncedCallback } from 'use-debounce';
 
 import type { ForwardRefHandle } from '@onekeyhq/app/src/views/NestedTabView/NestedTabView';
@@ -42,6 +44,7 @@ import { BottomView } from './BottomView';
 import NFTList from './NFT/NFTList';
 import ToolsPage from './Tools';
 import { WalletHomeTabEnum } from './type';
+import CardCarousel from './Carousel/CardCarousel';
 
 const AccountHeader = () => <AccountInfo />;
 
@@ -50,7 +53,6 @@ const WalletTabs: FC = () => {
   const intl = useIntl();
   const ref = useRef<ForwardRefHandle>(null);
   const currentIndexRef = useRef<number>(0);
-  const { screenWidth } = useUserDevice();
   const isVerticalLayout = useIsVerticalLayout();
   const homeTabName = useAppSelector((s) => s.status.homeTabName);
   const { wallet, network, accountId, networkId, walletId } =
@@ -131,7 +133,7 @@ const WalletTabs: FC = () => {
       {
         name: WalletHomeTabEnum.History,
         tab: historyTab,
-      }
+      },
     ];
     return defaultTabs.filter((t) => {
       if (t.name === WalletHomeTabEnum.Collectibles) {
@@ -216,38 +218,7 @@ const WalletTabs: FC = () => {
     [networkId],
   );
 
-  const walletTabsContainer = (
-    <Tabs.Container
-      // IMPORTANT: key is used to force re-render when the tab is changed
-      // otherwise android app will crash when tabs are changed
-      key={platformEnv.isNativeAndroid ? `${tabContents.length}` : undefined}
-      canOpenDrawer
-      initialTabName={homeTabName}
-      refreshing={refreshing}
-      onRefresh={onRefresh}
-      onIndexChange={onIndexChange}
-      onStartChange={() => {
-        if (timer.current) clearTimeout(timer.current);
-      }}
-      renderHeader={AccountHeader}
-      headerHeight={
-        isVerticalLayout
-          ? FIXED_VERTICAL_HEADER_HEIGHT
-          : FIXED_HORIZONTAL_HEDER_HEIGHT
-      }
-      ref={ref}
-      containerStyle={{
-        maxWidth: MAX_PAGE_CONTAINER_WIDTH,
-        // reduce the width on iPad, sidebar's width is 244
-        width: isVerticalLayout ? screenWidth : screenWidth - 224,
-        marginHorizontal: 'auto', // Center align vertically
-        alignSelf: 'center',
-        flex: 1,
-      }}
-    >
-      {tabContents}
-    </Tabs.Container>
-  );
+  const walletTabsContainer = <View>{tabContents}</View>;
 
   if (!wallet) return null;
 
@@ -296,8 +267,17 @@ const Wallet = () => {
   useOnboardingRequired(true);
   useHtmlPreloadSplashLogoRemove();
 
+  const { screenWidth } = useUserDevice();
+
   return (
     <>
+      <View
+        style={{
+          alignItems: 'center',
+        }}
+      >
+        <CardCarousel />
+      </View>
       <Box flex={1}>
         <IdentityAssertion>
           <WalletTabs />
