@@ -1,16 +1,23 @@
-# Zap
+# Zap ⚡️
 
 <p align="center">
   <img width==360 height=360 src="./docs/logo.svg">
-</p>
+<p>
 
 <p align="center">
   <strong>Instant | Intuitive | Independent<strong>
-</p>
+<p>
+
+<p align="center">
+  <sub>Built for <a href="https://ethmunich.de/">ETHMunich 2023</a>
+<p>
+
+## ❓ What is Zap?
+Zap is an all-in-one **mobile-first** approach to a Multi-Coin Wallet, supporting non-custodial EVMs and Lightning wallets for every user wanting to get into Web3 and for power users as well. 
 
 ## ✨ Acknowledgements
 
-First and foremost,we would like to extend our gratitude to [OneKey](<[url](http://onekey.so)>) for making their [source code](<[url](https://github.com/OneKeyHQ/app-monorepo)>) open source, allowing us to build upon their implementation to create **Zap**.
+We would like to extend our gratitude to [OneKey](<[url](http://onekey.so)>) for making their [source code](<[url](https://github.com/OneKeyHQ/app-monorepo)>) open source, allowing us to build upon their implementation to create **Zap**.
 
 ## 🚀 Getting Onboard
 
